@@ -1,0 +1,6 @@
+# Copy this file to local.properties and fill in your own values.
+# Do not commit local.properties.
+sdk.dir=/Users/your-name/Library/Android/sdk
+API_BASE_URL=
+REALTIME_SIGNALING_URL=wss://api.decart.ai
+DEFAULT_MODEL_NAME=lucy-vton-latest

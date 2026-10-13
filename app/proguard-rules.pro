@@ -1,0 +1,3 @@
+-keepattributes *Annotation*, Signature, InnerClasses, EnclosingMethod
+-keep class ai.anywear.mvp.data.** { *; }
+-keep class org.webrtc.** { *; }
