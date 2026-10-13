@@ -9,29 +9,29 @@
     <string name="share_session">分享会话</string>
     <string name="feedback">反馈</string>
     <string name="billing">计费状态</string>
-    <string name="status_idle">请选择衣服图片并开启摄像头</string>
+    <string name="status_idle">准备就绪</string>
     <string name="camera_permission_required">需要相机权限才能进行实时试穿</string>
     <string name="garment_required">请先选择衣服图片</string>
     <string name="realtime_not_configured">请先在设置中配置 Decart API Key 和实时服务地址</string>
     <string name="feedback_hint">反馈会上传当前本地帧和输出帧；需要先配置可选的后端 API 地址</string>
     <string name="no_archive_yet">还没有可分享的会话记录</string>
     <string name="settings">设置</string>
-    <string name="settings_intro">Decart API Key、实时地址和模型均保存在本机，不会写入代码或 APK。后端 API 仅用于可选的计费、日志和反馈。</string>
+    <string name="settings_intro">连接 Decart 实时服务。所有配置只保存在这台设备上，不会写入代码或 APK。</string>
     <string name="settings_api_url">可选后端 API 地址</string>
-    <string name="settings_api_url_hint">可留空；仅用于计费、日志和反馈，例如 https://api.example.com/</string>
+    <string name="settings_api_url_hint">可留空 · 仅用于计费、日志和反馈</string>
     <string name="settings_api_url_invalid">请输入有效的 http:// 或 https:// 地址</string>
     <string name="settings_realtime_url">Decart 实时地址</string>
-    <string name="settings_realtime_url_hint">必填，例如 wss://api.decart.ai</string>
+    <string name="settings_realtime_url_hint">必填 · 通常无需修改</string>
     <string name="settings_realtime_url_required">请填写实时地址</string>
     <string name="settings_realtime_url_invalid">请输入 ws:// 或 wss:// 地址</string>
     <string name="settings_api_key">Decart API Key</string>
-    <string name="settings_api_key_hint">必填；仅保存在本机 SharedPreferences，不会写入代码</string>
+    <string name="settings_api_key_hint">必填 · 仅保存在本机</string>
     <string name="settings_api_key_required">请填写 Decart API Key</string>
     <string name="settings_model">模型名称</string>
     <string name="settings_model_hint">默认 lucy-vton-latest；支持 lucy-2.1、lucy-2.5、lucy-vton-3.5、lucy-vton-3.6、lucy-restyle-2、lucy-latest、lucy-vton-latest、lucy-restyle-latest</string>
     <string name="settings_model_required">请填写模型名称</string>
     <string name="settings_model_invalid">该模型不受当前 Decart SDK 支持</string>
-    <string name="settings_telemetry">允许上传匿名遥测与反馈</string>
+    <string name="settings_telemetry">匿名遥测与反馈</string>
     <string name="settings_save">保存配置</string>
     <string name="settings_saved">配置已保存</string>
     <string name="settings_reset">恢复默认值</string>
@@ -57,7 +57,7 @@
     <string name="feedback_uploaded">反馈已上传</string>
     <string name="feedback_upload_failed">反馈上传失败：%1$s</string>
     <string name="archive_failed">会话记录创建失败</string>
-    <string name="archive_saved">会话记录已保存，可点击分享</string>
+    <string name="archive_saved">会话已保存，可在「会话」中分享</string>
     <string name="confirm">确定</string>
     <string name="billing_enabled">计费状态：%1$s</string>
     <string name="billing_remaining">剩余试穿次数：%1$d</string>
@@ -65,4 +65,63 @@
     <string name="billing_insufficient">余额不足</string>
     <string name="billing_capped">已达到当前限制</string>
     <string name="billing_failed">计费状态获取失败：%1$s</string>
+
+    <!-- Redesign -->
+    <string name="back">返回</string>
+    <string name="live_badge">LIVE</string>
+    <string name="empty_overline">KABUDA · 实时 AI 试穿</string>
+    <string name="empty_title">选一件衣服，\n镜头里立刻换上。</string>
+    <string name="empty_body">前置摄像头 + Decart Lucy 实时模型，所见即所穿。</string>
+    <string name="step_key_title">连接 Decart</string>
+    <string name="step_key_todo">在设置中填写 API Key</string>
+    <string name="step_key_done">已配置 · %1$s</string>
+    <string name="step_garment_title">选一件衣服</string>
+    <string name="step_garment_todo">从相册挑一张平铺或模特图</string>
+    <string name="step_camera_title">打开前置相机</string>
+    <string name="step_camera_todo">站远一点，让上半身入镜</string>
+    <string name="dock_garment">衣服</string>
+    <string name="dock_camera_on">打开相机</string>
+    <string name="dock_camera_off">关闭相机</string>
+    <string name="status_need_key">先在设置中连接 Decart</string>
+    <string name="status_need_garment">选一件衣服</string>
+    <string name="status_need_camera">打开相机，开始试穿</string>
+    <string name="status_ready">准备就绪 · 按下快门开始</string>
+    <string name="session_sheet_overline">当前会话</string>
+    <string name="session_sheet_title">会话</string>
+    <string name="action_save_caption">商品图、元数据与当前帧打包为 ZIP</string>
+    <string name="action_share_caption">发送最近一次保存的会话</string>
+    <string name="action_share_caption_empty">先保存一次会话</string>
+    <string name="action_feedback_caption">上传当前画面，帮助改进效果</string>
+    <string name="action_billing_caption">剩余次数与免费体验</string>
+    <string name="action_needs_backend">需要配置可选后端</string>
+    <string name="feedback_field">哪里不对劲？</string>
+    <string name="billing_remaining_label">剩余试穿次数</string>
+    <string name="billing_unit">次</string>
+    <string name="billing_enabled_label">计费已启用</string>
+    <string name="billing_free_pass_label">免费体验</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="available">可用</string>
+    <string name="unavailable">不可用</string>
+    <string name="settings_overline">偏好</string>
+    <string name="settings_section_decart">Decart 实时服务</string>
+    <string name="settings_section_backend">可选后端</string>
+    <string name="settings_section_privacy">隐私</string>
+    <string name="settings_model_hint_short">推荐 lucy-vton-latest</string>
+    <string name="settings_telemetry_caption">帮助我们定位连接与画质问题</string>
+    <string name="settings_footer">所有配置仅保存在本机</string>
+    <string name="settings_reset_title">恢复默认值？</string>
+    <string name="settings_reset_message">这会清除已保存的 API Key，并把地址和模型恢复为默认值。</string>
+    <string name="settings_reset_confirm">恢复默认</string>
+
+    <string-array name="realtime_models">
+        <item>lucy-vton-latest</item>
+        <item>lucy-vton-3.6</item>
+        <item>lucy-vton-3.5</item>
+        <item>lucy-latest</item>
+        <item>lucy-2.5</item>
+        <item>lucy-2.1</item>
+        <item>lucy-restyle-latest</item>
+        <item>lucy-restyle-2</item>
+    </string-array>
 </resources>

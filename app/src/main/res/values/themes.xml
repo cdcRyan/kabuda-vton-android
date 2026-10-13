@@ -1,8 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Kabuda" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:statusBarColor">@color/black</item>
-        <item name="android:navigationBarColor">@color/black</item>
-        <item name="android:windowBackground">@color/black</item>
+
+    <style name="Theme.Kabuda" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/kb_ink</item>
+        <item name="colorOnPrimary">@color/kb_bg</item>
+        <item name="colorPrimaryContainer">@color/kb_surface_highest</item>
+        <item name="colorOnPrimaryContainer">@color/kb_ink</item>
+        <item name="colorSecondary">@color/kb_live</item>
+        <item name="colorOnSecondary">@color/kb_bg</item>
+        <item name="colorSecondaryContainer">@color/kb_surface_highest</item>
+        <item name="colorOnSecondaryContainer">@color/kb_ink</item>
+        <item name="colorTertiary">@color/kb_mint</item>
+        <item name="colorError">@color/kb_live</item>
+
+        <item name="android:colorBackground">@color/kb_bg</item>
+        <item name="colorOnBackground">@color/kb_ink</item>
+        <item name="colorSurface">@color/kb_surface</item>
+        <item name="colorOnSurface">@color/kb_ink</item>
+        <item name="colorOnSurfaceVariant">@color/kb_ink_muted</item>
+        <item name="colorSurfaceVariant">@color/kb_surface_high</item>
+        <item name="colorSurfaceContainerLowest">@color/kb_bg</item>
+        <item name="colorSurfaceContainerLow">@color/kb_surface</item>
+        <item name="colorSurfaceContainer">@color/kb_surface</item>
+        <item name="colorSurfaceContainerHigh">@color/kb_surface_high</item>
+        <item name="colorSurfaceContainerHighest">@color/kb_surface_highest</item>
+        <item name="colorOutline">@color/kb_line</item>
+        <item name="colorOutlineVariant">@color/kb_line</item>
+        <item name="colorControlHighlight">#1FFFFFFF</item>
+        <item name="colorControlNormal">@color/kb_ink</item>
+        <item name="colorSurfaceInverse">@color/kb_ink</item>
+        <item name="colorOnSurfaceInverse">@color/kb_bg</item>
+        <item name="colorPrimaryInverse">@color/kb_live</item>
+
+        <item name="android:windowBackground">@color/kb_bg</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <item name="materialButtonStyle">@style/Widget.Kabuda.Button</item>
+        <item name="textInputStyle">@style/Widget.Kabuda.TextInput</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.Kabuda.Dialog</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Kabuda.BottomSheet</item>
+    </style>
+
+    <!-- Buttons -->
+    <style name="Widget.Kabuda.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">56dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="cornerRadius">28dp</item>
+        <item name="backgroundTint">@color/kb_ink</item>
+        <item name="android:textColor">@color/kb_bg</item>
+    </style>
+
+    <style name="Widget.Kabuda.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/kb_ink_muted</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- Inputs -->
+    <style name="Widget.Kabuda.TextInput" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/kb_surface_high</item>
+        <item name="boxStrokeColor">@color/kb_input_stroke</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1.5dp</item>
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+        <item name="hintTextColor">@color/kb_ink</item>
+        <item name="android:textColorHint">@color/kb_ink_muted</item>
+        <item name="helperTextTextColor">@color/kb_ink_faint</item>
+        <item name="endIconTint">@color/kb_ink_muted</item>
+    </style>
+
+    <style name="Widget.Kabuda.TextInput.Dropdown" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxBackgroundColor">@color/kb_surface_high</item>
+        <item name="boxStrokeColor">@color/kb_input_stroke</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1.5dp</item>
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+        <item name="hintTextColor">@color/kb_ink</item>
+        <item name="android:textColorHint">@color/kb_ink_muted</item>
+        <item name="helperTextTextColor">@color/kb_ink_faint</item>
+        <item name="endIconTint">@color/kb_ink_muted</item>
+    </style>
+
+    <!-- Dialogs & sheets -->
+    <style name="ThemeOverlay.Kabuda.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorSurface">@color/kb_surface_high</item>
+        <item name="colorSurfaceContainerHigh">@color/kb_surface_high</item>
+        <item name="colorPrimary">@color/kb_ink</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Kabuda.Large</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.Kabuda.DialogButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.Kabuda.DialogButton.Muted</item>
+    </style>
+
+    <style name="Widget.Kabuda.DialogButton" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/kb_ink</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Widget.Kabuda.DialogButton.Muted">
+        <item name="android:textColor">@color/kb_ink_muted</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="ThemeOverlay.Kabuda.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.Kabuda.BottomSheet</item>
+        <item name="android:navigationBarColor">@color/kb_surface</item>
+    </style>
+
+    <style name="Widget.Kabuda.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">@color/kb_surface</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Kabuda.Sheet</item>
+    </style>
+
+    <style name="ShapeAppearance.Kabuda.Large" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">28dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Kabuda.Sheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">28dp</item>
+        <item name="cornerSizeTopRight">28dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Kabuda.Thumb" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
+
+    <style name="ShapeAppearance.Kabuda.Pip" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+    </style>
+
+    <!-- Type -->
+    <style name="Kabuda.Text.Display" parent="">
+        <item name="android:fontFamily">serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/kb_ink</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
+
+    <style name="Kabuda.Text.Overline" parent="">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/kb_ink_faint</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:letterSpacing">0.16</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="Kabuda.Text.Body" parent="">
+        <item name="android:textColor">@color/kb_ink_muted</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingMultiplier">1.35</item>
+    </style>
+
+    <style name="Kabuda.Text.Title" parent="">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/kb_ink</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Kabuda.Text.Caption" parent="">
+        <item name="android:textColor">@color/kb_ink_muted</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Kabuda.Text.DockLabel" parent="">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/kb_ink</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:shadowColor">#99000000</item>
+        <item name="android:shadowRadius">6</item>
     </style>
 </resources>

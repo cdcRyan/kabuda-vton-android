@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Legacy names kept for compatibility -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
+
+    <!-- Kabuda palette: warm darkroom + chalk ink + one signal colour -->
+    <color name="kb_bg">#FF0D0C0B</color>
+    <color name="kb_surface">#FF171513</color>
+    <color name="kb_surface_high">#FF201D1A</color>
+    <color name="kb_surface_highest">#FF2A2622</color>
+    <color name="kb_line">#FF2F2B27</color>
+
+    <color name="kb_ink">#FFF3EEE6</color>
+    <color name="kb_ink_muted">#FF9E968C</color>
+    <color name="kb_ink_faint">#FF6B645C</color>
+
+    <color name="kb_live">#FFFF5A36</color>
+    <color name="kb_amber">#FFF2B84B</color>
+    <color name="kb_mint">#FF8FE3B0</color>
+
+    <color name="kb_glass">#73121110</color>
+    <color name="kb_glass_stroke">#26FFFFFF</color>
+    <color name="kb_pip_stroke">#66FFFFFF</color>
 </resources>

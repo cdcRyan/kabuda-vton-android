@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/stepRow"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:minHeight="64dp"
+    android:orientation="horizontal"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <FrameLayout
+        android:layout_width="28dp"
+        android:layout_height="28dp">
+
+        <TextView
+            android:id="@+id/stepIndex"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_step_index"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:textColor="@color/kb_ink_muted"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/stepCheck"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_step_done"
+            android:importantForAccessibility="no"
+            android:padding="6dp"
+            android:src="@drawable/ic_check"
+            android:visibility="gone"
+            app:tint="@color/kb_bg" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/stepTitle"
+            style="@style/Kabuda.Text.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/stepCaption"
+            style="@style/Kabuda.Text.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/stepChevron"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_chevron_right"
+        app:tint="@color/kb_ink_faint" />
+</LinearLayout>

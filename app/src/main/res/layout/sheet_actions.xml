@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="16dp">
+
+    <View
+        android:layout_width="36dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_sheet_handle" />
+
+    <TextView
+        style="@style/Kabuda.Text.Overline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/session_sheet_overline" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="serif"
+        android:text="@string/session_sheet_title"
+        android:textColor="@color/kb_ink"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <include
+        android:id="@+id/archiveButton"
+        layout="@layout/item_action" />
+
+    <include
+        android:id="@+id/shareButton"
+        layout="@layout/item_action" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/kb_line" />
+
+    <include
+        android:id="@+id/feedbackButton"
+        layout="@layout/item_action" />
+
+    <include
+        android:id="@+id/billingButton"
+        layout="@layout/item_action" />
+</LinearLayout>
