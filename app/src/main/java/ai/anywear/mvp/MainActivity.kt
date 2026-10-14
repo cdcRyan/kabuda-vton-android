@@ -14,6 +14,7 @@ import ai.anywear.mvp.recording.SessionMetadata
 import ai.decart.sdk.ConnectionState
 import ai.decart.sdk.RealtimeModel
 import ai.decart.sdk.RealtimeModels
+import ai.decart.sdk.realtime.FacingMode
 import android.Manifest
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity() {
     private var garmentFile: File? = null
     private var activeModel: RealtimeModel? = null
     private var cameraStarted = false
+    private var cameraFacing = FacingMode.FRONT
     private var tryonStarted = false
     private var tryonConnecting = false
     private var sessionId: String = UUID.randomUUID().toString()
@@ -119,6 +121,7 @@ class MainActivity : AppCompatActivity() {
             context = this,
             localContainer = binding.localRenderer,
             remoteContainer = binding.remoteRenderer,
+            initialFacing = cameraFacing,
             onConnectionState = ::onConnectionState,
             onRemoteStream = ::onRemoteStream,
             onError = ::onRealtimeError,
@@ -130,6 +133,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.selectButton.setOnClickListener { pickGarment() }
         binding.cameraButton.setOnClickListener { toggleCamera() }
+        binding.switchCameraButton.setOnClickListener { view ->
+            view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            switchCamera()
+        }
         binding.tryonButton.setOnClickListener { view ->
             view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             toggleTryOn()
@@ -235,6 +242,53 @@ class MainActivity : AppCompatActivity() {
         render()
     }
 
+    private fun switchCamera() {
+        val wasActive = tryonConnecting || tryonStarted
+        val garment = garmentFile
+        val model = RealtimeModels.fromName(preferences.modelName)
+
+        if (wasActive) stopTryOn(restartPreview = false)
+
+        cameraFacing = if (cameraFacing == FacingMode.FRONT) FacingMode.BACK else FacingMode.FRONT
+        realtimeSession.setFacing(cameraFacing)
+
+        if (!cameraStarted) {
+            notify(
+                getString(
+                    if (cameraFacing == FacingMode.FRONT) R.string.camera_front_selected
+                    else R.string.camera_back_selected,
+                ),
+            )
+            render()
+            return
+        }
+
+        if (model == null) {
+            notify(getString(R.string.unsupported_model))
+            render()
+            return
+        }
+
+        runCatching { realtimeSession.startPreview(model) }
+            .onSuccess {
+                binding.localRenderer.alpha = 0f
+                binding.localRenderer.animate().alpha(1f).setDuration(220).start()
+                notify(
+                    getString(
+                        if (cameraFacing == FacingMode.FRONT) R.string.camera_switched_front
+                        else R.string.camera_switched_back,
+                    ),
+                )
+                render()
+                if (wasActive && garment != null) startTryOn(garment, model)
+            }
+            .onFailure { error ->
+                cameraStarted = false
+                notify(getString(R.string.camera_switch_failed, error.message ?: "unknown"))
+                render()
+            }
+    }
+
     private fun toggleTryOn() {
         if (tryonConnecting || tryonStarted) {
             stopTryOn(restartPreview = cameraStarted)
@@ -280,14 +334,14 @@ class MainActivity : AppCompatActivity() {
 
         connectJob = lifecycleScope.launch {
             try {
-                val imageDataUri = withContext(Dispatchers.IO) {
-                    repository.garmentToDataUri(garment)
+                val imageBase64 = withContext(Dispatchers.IO) {
+                    repository.garmentToBase64(garment)
                 }
                 realtimeSession.connect(
                     apiKey = preferences.apiKey,
                     baseUrl = preferences.realtimeSignalingUrl,
                     model = model,
-                    imageDataUri = imageDataUri,
+                    imageBase64 = imageBase64,
                 )
 
                 activeModel = model
@@ -487,6 +541,18 @@ class MainActivity : AppCompatActivity() {
         binding.cameraButton.contentDescription = binding.cameraLabel.text
         binding.cameraButton.isEnabled = !active
         binding.cameraButton.alpha = if (active) 0.4f else 1f
+
+        // Camera switch
+        binding.switchCameraButton.isVisible = cameraStarted
+        binding.switchCameraButton.isEnabled = !tryonConnecting
+        binding.switchCameraButton.alpha = if (tryonConnecting) 0.4f else 1f
+        binding.switchCameraButton.contentDescription = getString(
+            if (cameraFacing == FacingMode.FRONT) {
+                R.string.switch_to_back_camera
+            } else {
+                R.string.switch_to_front_camera
+            },
+        )
 
         // Shutter
         binding.tryonProgress.isVisible = tryonConnecting ||

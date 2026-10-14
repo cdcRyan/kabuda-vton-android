@@ -7,7 +7,7 @@
 [![Android SDK](https://img.shields.io/badge/Compile%20SDK-35-3DDC84?logo=android&logoColor=white)](https://developer.android.com/studio/releases/platforms)
 [![Decart SDK](https://img.shields.io/badge/Decart%20Android%20SDK-0.8.2-FF5A36)](https://docs.platform.decart.ai/sdks/android)
 
-卡布达允许用户从手机本地选择衣服图片，结合前置摄像头画面，通过 Decart Realtime 服务实时生成 AI 试穿结果。
+卡布达允许用户从手机本地选择衣服图片，结合前置或后置摄像头画面，通过 Decart Realtime 服务实时生成 AI 试穿结果。
 
 项目是一个独立的 Android MVP，不包含 AnyWear 的专有代码、素材、模型权重或服务端。
 
@@ -15,7 +15,7 @@
 
 - 通过系统 Photo Picker 选择本地衣服图片
 - 自动处理 EXIF 方向，并缩放、压缩为适合传输的 JPEG
-- 前置摄像头实时预览
+- 前置/后置摄像头实时预览，支持一键切换
 - 连接 Decart Realtime 服务并实时渲染 AI 试穿结果
 - 支持多个 Lucy Realtime 模型
 - 远端画面出现后，本地预览自动切换为画中画
@@ -31,7 +31,7 @@
 ```mermaid
 flowchart LR
     A[选择本地衣服图片] --> B[图片预处理]
-    D[前置摄像头] --> C[本地视频流]
+    D[前置/后置摄像头] --> C[本地视频流]
     B --> E[Decart RealtimeClient]
     C --> E
     E --> F[Decart Realtime 服务]
@@ -43,7 +43,7 @@ flowchart LR
 主要流程：
 
 1. 在设置中保存 Decart API Key、实时地址和模型名称；
-2. 选择衣服图片，并转换为 `data:image/jpeg;base64,...`；
+2. 选择衣服图片，并转换为服务端要求的纯 Base64 JPEG；
 3. 创建摄像头本地视频流；
 4. 调用 `RealTimeClient.connect()` 传入衣服图片和摄像头流；
 5. 通过 WebSocket 信令与 WebRTC/LiveKit 媒体通道接收远端结果；
@@ -54,7 +54,7 @@ flowchart LR
 - JDK 17
 - Android SDK 35
 - Android Studio 或 Android 命令行构建工具
-- 支持前置摄像头的 Android 真机
+- 支持前后摄像头的 Android 真机
 - Android 7.0（API 24）及以上
 - 可访问 Decart Realtime 服务的网络
 - 有效的 Decart API Key
@@ -143,7 +143,7 @@ lucy-restyle-latest
 1. 安装并打开卡布达；
 2. 进入设置，填写 Decart API Key，并保存其他连接配置；
 3. 返回主界面，从手机相册选择衣服图片；
-4. 开启摄像头并授予相机权限；
+4. 开启摄像头并授予相机权限，可在预览中切换前置或后置镜头；
 5. 开始试穿并等待远端 AI 输出；
 6. AI 输出出现后，本地预览会自动切换为画中画；
 7. 打开会话面板，保存或分享当前会话 ZIP；
@@ -157,7 +157,7 @@ lucy-restyle-latest
 | Android 构建 | Gradle 8.7 / Android Gradle Plugin 8.5.2 |
 | 最低 / 目标 SDK | API 24 / API 35 |
 | UI | Android XML + View Binding |
-| Realtime SDK | `com.github.DecartAI:decart-android:0.8.2` |
+| Realtime SDK | Decart Android SDK `0.8.2` 源码 + 本地协议兼容补丁（`decart-sdk` 模块） |
 | HTTP | Retrofit 2.11 + OkHttp 4.12 |
 | 图片处理 | Android Photo Picker + ExifInterface |
 | 本地存储 | SharedPreferences |
@@ -182,6 +182,10 @@ app/src/main/java/ai/anywear/mvp/
     └── SessionArchive.kt              # 会话 ZIP 保存与分享
 ```
 
+`decart-sdk/` 是 Decart 官方 Android SDK `0.8.2` 的本地副本。它包含一项
+协议兼容补丁，并保留上游 MIT 许可证和补丁说明，详见
+`decart-sdk/PATCHES.md`。
+
 ## 常见问题
 
 ### Missing API key
@@ -203,7 +207,7 @@ app/src/main/java/ai/anywear/mvp/
 ### 相机无法打开
 
 - 检查系统设置中是否已允许卡布达使用相机；
-- 关闭其他正在独占前置摄像头的应用；
+- 关闭其他正在独占摄像头的应用；
 - 使用真实设备测试，模拟器可能不支持所需 Realtime 功能。
 
 ## 官方文档

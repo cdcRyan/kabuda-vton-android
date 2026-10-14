@@ -13,6 +13,7 @@ import ai.decart.sdk.realtime.RealtimeMediaStream
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
@@ -39,6 +40,7 @@ class DecartRealtimeSession(
     private val context: Context,
     private val localContainer: FrameLayout,
     private val remoteContainer: FrameLayout,
+    initialFacing: FacingMode = FacingMode.FRONT,
     private val onConnectionState: (ConnectionState) -> Unit = {},
     private val onRemoteStream: (Boolean) -> Unit = {},
     private val onError: (String) -> Unit = {},
@@ -51,19 +53,28 @@ class DecartRealtimeSession(
     private var localBinding: RendererBinding? = null
     private var remoteBinding: RendererBinding? = null
     private var previewModel: RealtimeModel? = null
+    private var previewFacing: FacingMode? = null
+
+    var facing: FacingMode = initialFacing
+        private set
 
     val sessionId: String?
         get() = client?.sessionId
 
+    fun setFacing(newFacing: FacingMode) {
+        facing = newFacing
+    }
+
     fun startPreview(model: RealtimeModel) {
         check(client == null) { "Cannot start preview while a session client is active" }
-        if (localStream == null || previewModel?.name != model.name) {
+        if (localStream == null || previewModel?.name != model.name || previewFacing != facing) {
             disposeLocalStream()
             previewModel = model
+            previewFacing = facing
             localStream = RealTimeClient.createLocalVideoStream(
                 context = context,
                 model = model,
-                facing = FacingMode.FRONT,
+                facing = facing,
                 logger = AndroidLogger(LogLevel.WARN),
             )
         }
@@ -76,12 +87,12 @@ class DecartRealtimeSession(
         apiKey: String,
         baseUrl: String,
         model: RealtimeModel,
-        imageDataUri: String,
+        imageBase64: String,
     ): RealtimeMediaStream {
         require(apiKey.isNotBlank()) { "Decart API Key is empty" }
         require(baseUrl.isNotBlank()) { "Decart realtime URL is empty" }
 
-        if (localStream == null || previewModel?.name != model.name) {
+        if (localStream == null || previewModel?.name != model.name || previewFacing != facing) {
             disposeLocalStream()
             createPreviewAfterMissingStream(model)
         }
@@ -114,8 +125,8 @@ class DecartRealtimeSession(
                         text = GARMENT_PROMPT,
                         enhance = true,
                     ),
-                    initialImage = imageDataUri,
-                    facing = FacingMode.FRONT,
+                    initialImage = imageBase64,
+                    facing = facing,
                     publishCamera = true,
                 ),
                 localStream = preview,
@@ -123,6 +134,7 @@ class DecartRealtimeSession(
             attachRemote(connectedStream)
             connectedStream
         } catch (error: Throwable) {
+            Log.e(TAG, "Realtime connect failed", error)
             // stopSession may already have released this exact client while the
             // suspend call was unwinding; only clean up when it is still current.
             if (client === newClient) {
@@ -179,10 +191,11 @@ class DecartRealtimeSession(
     private fun createPreviewAfterMissingStream(model: RealtimeModel): RealtimeMediaStream {
         disposeLocalStream()
         previewModel = model
+        previewFacing = facing
         val stream = RealTimeClient.createLocalVideoStream(
             context = context,
             model = model,
-            facing = FacingMode.FRONT,
+            facing = facing,
             logger = AndroidLogger(LogLevel.WARN),
         )
         localStream = stream
@@ -197,7 +210,14 @@ class DecartRealtimeSession(
             .launchIn(scope)
 
         collectorJobs += newClient.errors
-            .onEach { error -> onError(error.message) }
+            .onEach { error ->
+                Log.e(
+                    TAG,
+                    "Decart error code=${error.code} message=${error.message} data=${error.data}",
+                    error.cause,
+                )
+                onError(error.message)
+            }
             .launchIn(scope)
 
         collectorJobs += newClient.remoteStreamUpdates
@@ -280,6 +300,7 @@ class DecartRealtimeSession(
         localBinding = null
         localStream?.dispose()
         localStream = null
+        previewFacing = null
     }
 
     private fun releaseClientOnly() {
@@ -305,6 +326,7 @@ class DecartRealtimeSession(
     private enum class RendererTarget { LOCAL, REMOTE }
 
     companion object {
+        private const val TAG = "KabudaRealtime"
         const val GARMENT_PROMPT = "Replace the current top with this garment."
     }
 }

@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "KabudaMvp"
 include(":app")
+include(":decart-sdk")

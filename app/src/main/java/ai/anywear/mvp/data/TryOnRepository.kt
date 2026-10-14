@@ -134,11 +134,13 @@ class TryOnRepository(
     }.getOrNull()
 
     /**
-     * Converts a locally selected garment into the data URI expected by the
-     * Decart realtime SDK. The image is rotated according to EXIF, resized to a
-     * practical realtime-upload size, and compressed before base64 encoding.
+     * Converts a locally selected garment into the raw Base64 payload expected
+     * by the Decart realtime SDK. The image is rotated according to EXIF,
+     * resized to a practical realtime-upload size, and compressed before
+     * Base64 encoding. Do not add a `data:image/...;base64,` prefix here: the
+     * realtime service rejects it as invalid set_image data.
      */
-    fun garmentToDataUri(file: File): String {
+    fun garmentToBase64(file: File): String {
         require(file.exists() && file.length() > 0L) { "衣服图片不存在或为空" }
 
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
@@ -184,8 +186,7 @@ class TryOnRepository(
             output.toByteArray()
         }
         scaled.recycle()
-        val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
-        return "data:image/jpeg;base64,$encoded"
+        return Base64.encodeToString(bytes, Base64.NO_WRAP)
     }
 
     private fun calculateSampleSize(longestSide: Int, target: Int): Int {
@@ -228,6 +229,6 @@ class TryOnRepository(
         SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US).format(Date())
 
     private companion object {
-        const val MAX_UPLOAD_SIDE = 1600
+        const val MAX_UPLOAD_SIDE = 1200
     }
 }

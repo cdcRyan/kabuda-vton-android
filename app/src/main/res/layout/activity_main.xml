@@ -228,6 +228,7 @@
         android:id="@+id/dock"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         android:baselineAligned="false"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -380,6 +381,44 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="@string/dock_camera_on" />
+        </LinearLayout>
+
+        <!-- Switch camera -->
+        <LinearLayout
+            android:id="@+id/switchCameraButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/switch_camera"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp">
+
+                <ImageView
+                    android:id="@+id/switchCameraIcon"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_glass_circle"
+                    android:importantForAccessibility="no"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_switch_camera"
+                    app:tint="@color/kb_ink" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/switchCameraLabel"
+                style="@style/Kabuda.Text.DockLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/dock_switch_camera" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

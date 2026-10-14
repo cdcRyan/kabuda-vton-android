@@ -1,0 +1,53 @@
+package ai.decart.sdk.realtime
+
+import io.livekit.android.room.Room
+import io.livekit.android.room.track.AudioTrack
+import io.livekit.android.room.track.LocalAudioTrack
+import io.livekit.android.room.track.LocalVideoTrack
+import io.livekit.android.room.track.VideoTrack
+
+/**
+ * Local or remote video media stream. For caller-owned streams [room] is the
+ * LiveKit Room that owns the tracks and is reused for the session connect;
+ * call [dispose] when done.
+ */
+data class RealtimeMediaStream(
+    val videoTrack: VideoTrack? = null,
+    /**
+     * Audio is not supported in the Android LiveKit publisher yet.
+     * SDK-created streams always set this to null, and caller-provided audio
+     * tracks are ignored for publishing. Retained for 0.7 source compatibility.
+     */
+    @Deprecated("Audio tracks are not supported in the Android LiveKit publisher yet; this property is always null for SDK-created streams.")
+    val audioTrack: AudioTrack? = null,
+    val id: String,
+    val room: Room? = null,
+) {
+    /**
+     * Glass-to-glass seq tracker for this stream's pixel-marker stamp pipeline.
+     * Set by the SDK when a stream is created with `debugQuality = true`; the
+     * media channel reads it to wire the marker reader + latency snapshot.
+     * Internal and excluded from `equals`/`copy` (declared in the class body).
+     */
+    internal var seqTracker: SeqTracker? = null
+
+    /** Safe to call multiple times; best-effort on each underlying resource. */
+    @Suppress("DEPRECATION")
+    fun dispose() {
+        (videoTrack as? LocalVideoTrack)?.let { track ->
+            try { track.stopCapture() } catch (_: Exception) {}
+            try { track.stop() } catch (_: Exception) {}
+            try { track.dispose() } catch (_: Exception) {}
+        }
+        (audioTrack as? LocalAudioTrack)?.let { track ->
+            try { track.stop() } catch (_: Exception) {}
+            try { track.dispose() } catch (_: Exception) {}
+        }
+        try { room?.release() } catch (_: Exception) {}
+    }
+
+    companion object {
+        const val LOCAL_STREAM_ID = "stream-local"
+        const val REMOTE_STREAM_ID = "stream-remote"
+    }
+}
